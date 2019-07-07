@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import java.util.concurrent.ExecutionException;
 
 public class ProducerThread extends Thread {
+    private String kafkaBrokers;
     private String threadName;
     private Long delay;
     private String topicName;
@@ -14,13 +15,14 @@ public class ProducerThread extends Thread {
     private Producer<Long, String> producer;
     private Boolean simulation = false;
 
-    public ProducerThread(String threadName, String topicName, Integer messageCt, Long delay) {
+    public ProducerThread(String threadName, String kafkaBrokers, String topicName, Integer messageCt, Long delay) {
         super(threadName);
+        this.kafkaBrokers = kafkaBrokers;
         this.threadName = threadName;
         this.topicName = topicName;
         this.messageCt = messageCt;
         this.delay = delay;
-        producer = ProducerCreator.createProducer();
+        producer = ProducerCreator.createProducer(this.kafkaBrokers);
     }
 
     @Override

@@ -9,12 +9,11 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.util.Properties;
 
 public class ProducerCreator {
-	public static String KAFKA_BROKERS = "localhost:9092";
 	public static String CLIENT_ID="client1";
 
-	public static Producer<Long, String> createProducer() {
+	public static Producer<Long, String> createProducer(String kafkaBrokers) {
 		Properties props = new Properties();
-		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, KAFKA_BROKERS);
+		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBrokers);
 		props.put(ProducerConfig.CLIENT_ID_CONFIG, CLIENT_ID);
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, LongSerializer.class.getName());
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());

@@ -4,12 +4,12 @@ import kafka.producer.ProducerThread;
 import org.apache.commons.cli.*;
 
 public class App {
-	public static String DEFAULT_KAFKA_BROKERS = "localhost:9092";
-	public static String DEFAULT_TOPIC_NAME="marklogic";
-	public static String DEFAULT_THREAD_COUNT="4";
-	public static String DEFAULT_MESSAGE_COUNT="1000";
+	private static String DEFAULT_KAFKA_BROKERS = "localhost:9092";
+    private static String DEFAULT_TOPIC_NAME="marklogic";
+    private static String DEFAULT_THREAD_COUNT="4";
+    private static String DEFAULT_MESSAGE_COUNT="1000";
 
-	public static Long DELAY=0l;
+    private static Long DELAY=0L;
 
 	public static void main(String[] args) {
 		Options options = new Options();
@@ -43,8 +43,8 @@ public class App {
 			System.exit(1);
 			return;
 		}
-		Integer threadCt = Integer.parseInt(cmd.getOptionValue("threadsOptions", DEFAULT_THREAD_COUNT));
-		Integer messageCt = Integer.parseInt(cmd.getOptionValue("messages", DEFAULT_MESSAGE_COUNT));
+		int threadCt = Integer.parseInt(cmd.getOptionValue("threads", DEFAULT_THREAD_COUNT));
+		int messageCt = Integer.parseInt(cmd.getOptionValue("messages", DEFAULT_MESSAGE_COUNT));
 		String kafkaBrokers = cmd.getOptionValue("host", DEFAULT_KAFKA_BROKERS);
 		String topicName = cmd.getOptionValue("topic", DEFAULT_TOPIC_NAME);
 		System.out.println("threadCt: " + threadCt);

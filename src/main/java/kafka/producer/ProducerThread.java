@@ -5,6 +5,12 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.util.concurrent.ExecutionException;
+import java.io.IOException;
+
+import java.nio.file.*;
+import java.io.File;
+import java.util.Random;
+import java.util.Arrays;
 
 public class ProducerThread extends Thread {
     private String kafkaBrokers;
@@ -14,6 +20,7 @@ public class ProducerThread extends Thread {
     private Integer messageCt;
     private Producer<Long, String> producer;
     private Boolean simulation = false;
+    private Random generator = new Random();
 
     public ProducerThread(String threadName, String kafkaBrokers, String topicName, Integer messageCt, Long delay) {
         super(threadName);
@@ -53,7 +60,9 @@ public class ProducerThread extends Thread {
     }
 
     private Integer produceMessage() {
-        final ProducerRecord<Long, String> record = new ProducerRecord(topicName, generateLargeJsonMessage());
+        
+
+        final ProducerRecord<Long, String> record = new ProducerRecord(topicName, generate7400Message(choose7400File()));
         try {
             RecordMetadata metadata = producer.send(record).get();
             System.out.println("Record sent to partition " + metadata.partition() + " with offset " + metadata.offset());
@@ -90,5 +99,25 @@ public class ProducerThread extends Thread {
         sb.append("\t\"DOLOR\" : \"Vestibulum fermentum leo sodales velit aliquet cursus.\"");
         sb.append("}");
         return sb.toString();
+    }
+
+    private String choose7400File() {
+        String pathdir = "./sampledata";
+        File folder = new File(pathdir);
+        String[] files = folder.list();
+        int randomIndex = generator.nextInt(files.length);
+        return pathdir + "/" + files[randomIndex];
+    }
+
+    private String generate7400Message(String filepath) {
+        String outString = "";
+
+        try {
+            outString = new String(Files.readAllBytes(Paths.get(filepath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return outString;
     }
 }
